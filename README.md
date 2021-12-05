@@ -17,3 +17,22 @@ conda create -f rynchops.yml
 conda activate rynchops
 streamlit run app.py
 ```
+
+# Roadmap
+## Phase 1: Demo
+```
+Input -> Chunker for variable size output -> Same-language Summarizer Model -> Translator -> Output
+                              |-> NER 
+```
+1. Model Pipelining
+2. Demo Application Development
+
+## Phase 2: Product Development
+```
+Input -> Chunker for variable size output -> Cross-language Summarizer Model -> Output
+                               | -> NER
+```
+1. Data Collection
+2. Dataset labeling
+3. Model training
+4. Develop Service Platform
