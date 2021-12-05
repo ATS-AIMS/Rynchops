@@ -13,3 +13,7 @@ conda create -f rynchops.yml
 ```
 
 # Prod
+```bash
+conda activate rynchops
+streamlit run app.py
+```
