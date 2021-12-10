@@ -117,7 +117,7 @@ class DemoModel:
             return text.split(SPLIT_MODES[split_mode])
 
     def marshall(self, text, method, explain_error=False):
-        """Marshalling code for a classmethod run on a string or list wit error handling.
+        """Marshalling code for a classmethod run on a string or list with error handling.
 
         Args:
             text (str or list): Text to run through method.
