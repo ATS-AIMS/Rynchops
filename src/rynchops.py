@@ -1,10 +1,8 @@
 import re
-from transformers import (
-    AutoTokenizer,
-    AutoModelForSeq2SeqLM,
-    M2M100ForConditionalGeneration,
-    M2M100Tokenizer,
-)
+import warnings
+
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
 
 SPLIT_MODES = {"Sentence": ". ", "Newline": "\n", "Paragraph": "\n\n", "None": None}
 
@@ -14,8 +12,11 @@ class mT5:
         """Create the mT5 model for summarization
         """
         source = "csebuetnlp/mT5_multilingual_XLSum"
-        self.tokenizer = AutoTokenizer.from_pretrained(source)
-        self.model = AutoModelForSeq2SeqLM.from_pretrained(source)
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.tokenizer = AutoTokenizer.from_pretrained(source)
+            self.model = AutoModelForSeq2SeqLM.from_pretrained(source)
 
     @staticmethod
     def whitespace_handler(k):
@@ -52,18 +53,15 @@ class mT5:
         return summary
 
 
-class M2M100:
-    def __init__(self, src_lang="ar"):
-        """Create M2M100 Language translation model.
-        
-        Args:
-            src_lang (str, optional): Language to translate from. Defaults to "ar".
+class Translate:
+    def __init__(self):
+        """Create Opus Language translation model.
         """
-        source = "facebook/m2m100_418M"
-        self.model = M2M100ForConditionalGeneration.from_pretrained(source)
-        self.tokenizer = M2M100Tokenizer.from_pretrained(
-            source, src_lang=src_lang, tgt_lang="en"
-        )
+        source = "Helsinki-NLP/opus-mt-mul-en"
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.tokenizer = AutoTokenizer.from_pretrained(source)
+            self.model = AutoModelForSeq2SeqLM.from_pretrained(source)
 
     def run(self, text):
         """Translate text to english.
@@ -74,24 +72,27 @@ class M2M100:
         Returns:
             str: Translated text.
         """
-        model_inputs = self.tokenizer(text, return_tensors="pt")
-        outputs = self.model.generate(
-            **model_inputs, forced_bos_token_id=self.tokenizer.get_lang_id("en")
+        x = self.tokenizer.encode(
+            text,
+            return_tensors="pt",
+            padding="max_length",
+            truncation=True,
+            max_length=512,
         )
-        with self.tokenizer.as_target_tokenizer():
-            translated = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return translated
+        x = self.model.generate(x, max_length=128, no_repeat_ngram_size=2, num_beams=4)
+        x = x[0]
+        x = self.tokenizer.decode(
+            x, skip_special_tokens=True, clean_up_tokenization_spaces=False
+        )
+        return x
 
 
 class DemoModel:
-    def __init__(self, src_lang="ar"):
-        """Creates a stacked mT5/m2m100 model.
-
-        Args:
-            src_lang (str, optional): Language of the text to translate. Defaults to "ar".
+    def __init__(self):
+        """Creates a stacked mT5/opus model.
         """
         self.mt5 = mT5()
-        self.m2m100 = M2M100(src_lang=src_lang)
+        self.trans = Translate()
 
     def split_text(self, text, split_mode="Paragraph"):
         """Split text according to a particular mode.
@@ -154,7 +155,7 @@ class DemoModel:
         return self.marshall(text, self.mt5.run, explain_error=False)
 
     def translate(self, text):
-        """Use m2m100 to translate
+        """Use translation model to translate
 
         Args:
             text (str or list of str): text to translate
@@ -162,7 +163,7 @@ class DemoModel:
         Returns:
             list: translated text
         """
-        return self.marshall(text, self.m2m100.run, explain_error=False)
+        return self.marshall(text, self.trans.run, explain_error=False)
 
     def run(self, text, split_mode="Paragraph", do_translate=True):
         """Summarize and translate text.
