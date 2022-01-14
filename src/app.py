@@ -11,7 +11,7 @@ def init():
     """Loads the model from HF.
     """
     if "model" not in st.session_state:
-        st.session_state.model = DemoModel(src_lang="ar")
+        st.session_state.model = DemoModel()
     if "canned" not in st.session_state:
         with open("canned_text.json", "r", encoding="utf-8") as fp:
             st.session_state.canned = json.load(fp)["canned_text"]
@@ -59,7 +59,7 @@ with st.expander("About the Model"):
 
 1. The model [mT5](https://arxiv.org/abs/2010.11934) was trained on the multilingual dataset [XLSum](https://aclanthology.org/2021.findings-acl.413/) by the [BUET CSE](https://cse.buet.ac.bd/research/index.php) NLP Group. The model can be found on the [:hugging_face: model repository](https://huggingface.co/csebuetnlp/mT5_multilingual_XLSum). It was intended to summarize news articles.
     
-2. The model [M2M100](https://ai.facebook.com/blog/introducing-many-to-many-multilingual-machine-translation/) was designed to translate over 100 different languages faithfully and is an open-source product of Facebook's AI Research division. The model can be found many places, including the [:hugging_face: model repository](https://huggingface.co/facebook/m2m100_418M) and [GitHub](https://github.com/pytorch/fairseq/tree/main/examples/m2m_100).
+2. The model [Opus MT](https://github.com/Helsinki-NLP/Opus-MT) is the translation model. It is maintained by Helinski NLP.
     """
     )
 
@@ -99,4 +99,3 @@ if submitted:
             text_of_input, split_mode=summa_mode, do_translate=is_arabic
         )
         full_output.markdown("\n\n".join(text_of_output))
-
