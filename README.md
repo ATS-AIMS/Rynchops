@@ -43,6 +43,7 @@ The points of contact for this project are [Elias Jaffe](https://github.com/Ejja
 conda activate rynchops
 streamlit run app.py
 ```
+![Screenshot of app summarization translation](img/screenshot1.png)
 
 # Roadmap
 ## Phase 1: Demo
