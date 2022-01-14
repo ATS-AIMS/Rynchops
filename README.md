@@ -32,7 +32,7 @@ The points of contact for this project are [Elias Jaffe](https://github.com/Ejja
 conda activate rynchops
 streamlit run app.py
 ```
-![Screenshot of app summarization translation](img/screenshot1.png)
+![Screenshot of app summarization translation](https://github.com/Ejjaffe/Rynchops/blob/main/img/screenshot1.PNG)
 
 # Roadmap
 ## Phase 1: Demo
