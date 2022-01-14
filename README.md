@@ -27,17 +27,6 @@ The points of contact for this project are [Elias Jaffe](https://github.com/Ejja
 
 (c) ATS 2021
 
-![Video](<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Rg6k-9tkhYA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>)
-
-![](https://www.youtube-nocookie.com/embed/Rg6k-9tkhYA)
-
-
-
-
-
-
-
-
 # Prod
 ```bash
 conda activate rynchops
