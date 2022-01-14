@@ -1,0 +1,14 @@
+name: rynchops
+channels:
+  - defaults
+  - huggingface
+  - pytorch
+  - conda-forge
+dependencies:
+  - streamlit
+  - transformers=4
+  - pytorch
+  - cudatoolkit=10.2
+  - jupyter
+  - ipywidgets
+prefix: C:\Users\elija\Anaconda3\envs\rynchops
